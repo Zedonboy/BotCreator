@@ -33,6 +33,7 @@ export const useAPICall = (func: Function | Function[], call: boolean = true) =>
                 }
 
                 Promise.all(promiseArr).then(data => {
+                    //@ts-ignore
                     setState({...state, loading :false, error : null, data})
                 }).catch(err => {
                     setState({...state, loading : false, error : err, data : null})
