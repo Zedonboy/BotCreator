@@ -1,7 +1,7 @@
 /* This example requires Tailwind CSS v2.0+ */
 import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import {Outlet} from "react-router-dom"
+import { Outlet, useMatch, useResolvedPath, Link } from "react-router-dom";
 import {
   CalendarIcon,
   ChartBarIcon,
@@ -10,35 +10,81 @@ import {
   InboxIcon,
   MenuIcon,
   UsersIcon,
+  BellIcon,
   CakeIcon,
   QuestionMarkCircleIcon,
   XIcon,
 } from "@heroicons/react/outline";
 
+import { HashRouter, Routes, Route } from "react-router-dom";
+
 import image from "../assets/images/contact.png";
 import Stats from "../components/Stats";
+import DomainPoint from "../components/DomainPoint";
+import InfoDialog from "../components/InfoDialog";
 const navigation = [
-  { name: "Home", href: "#", icon: HomeIcon, current: true },
-  { name: "A.I Contents", href: "#", icon: CakeIcon, current: false },
-  { name: "Templates", href: "#", icon: FolderIcon, current: false },
+  { name: "Home", href: "/dashboard", icon: HomeIcon, current: true },
+  {
+    name: "A.I Contents",
+    href: "/dashboard/history",
+    icon: CakeIcon,
+    current: false,
+  },
+  {
+    name: "Templates",
+    href: "/dashboard/templates",
+    icon: FolderIcon,
+    current: false,
+  },
   {
     name: "Seolo Suggest",
-    href: "#",
+    href: "kl",
     icon: CalendarIcon,
     current: false,
     label: "beta",
   },
   // { name: 'Documents', href: '#', icon: InboxIcon, current: false },
-  { name: "Domains", href: "#", icon: ChartBarIcon, current: false },
+  {
+    name: "Domains",
+    href: "/dashboard/domains",
+    icon: ChartBarIcon,
+    current: false,
+  },
 ];
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
+function NavLink({ name, href, icon }) {
+  const resolved = useResolvedPath(href)
+  const match = useMatch({ path: resolved.pathname, end: true });
+  return (
+    <Link
+      key={name}
+      to={href}
+      className={classNames(
+        match
+          ? "bg-indigo-800 text-white"
+          : "text-white hover:bg-indigo-600 hover:bg-opacity-75",
+        "group flex items-center px-2 py-2 text-base font-medium rounded-md"
+      )}
+    >
+      {/**@ts-ignore */}
+      {icon}
+      {/* <icon
+        className="mr-4 flex-shrink-0 h-6 w-6 text-indigo-300"
+        aria-hidden="true"
+      /> */}
+      {name}
+    </Link>
+  );
+}
+
 export default function DashboardWindow() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
+  const [showInfo, setShowInfo] = useState(false);
+  const [infoContent, setInfoContent] = useState({title: '', content: ""})
   return (
     <>
       {/*
@@ -48,7 +94,10 @@ export default function DashboardWindow() {
         <html class="h-full bg-gray-100">
         <body class="h-full">
         ```
+        
       */}
+      {/**@ts-ignore */}
+      <InfoDialog open={showInfo} closeModal={setShowInfo} content={infoContent} />
       <div>
         <Transition.Root show={sidebarOpen} as={Fragment}>
           <Dialog
@@ -109,24 +158,7 @@ export default function DashboardWindow() {
                     />
                   </div>
                   <nav className="mt-5 px-2 space-y-1">
-                    {navigation.map((item) => (
-                      <a
-                        key={item.name}
-                        href={item.href}
-                        className={classNames(
-                          item.current
-                            ? "bg-indigo-800 text-white"
-                            : "text-white hover:bg-indigo-600 hover:bg-opacity-75",
-                          "group flex items-center px-2 py-2 text-base font-medium rounded-md"
-                        )}
-                      >
-                        <item.icon
-                          className="mr-4 flex-shrink-0 h-6 w-6 text-indigo-300"
-                          aria-hidden="true"
-                        />
-                        {item.name}
-                      </a>
-                    ))}
+                    {navigation.map((item) => <NavLink href={item.href} icon={item.icon} name={item.name}/>)}
                   </nav>
                 </div>
                 <div className="flex-shrink-0 flex border-t border-indigo-800 p-4">
@@ -172,27 +204,7 @@ export default function DashboardWindow() {
               </div>
               <nav className="mt-5 flex-1 px-2 space-y-1">
                 {navigation.map((item) => (
-                  <a
-                    key={item.name}
-                    href={item.href}
-                    className={classNames(
-                      item.current
-                        ? "bg-indigo-800 text-white"
-                        : "text-white hover:bg-indigo-600 hover:bg-opacity-75",
-                      "group flex items-center px-2 py-2 text-sm font-medium rounded-md"
-                    )}
-                  >
-                    <item.icon
-                      className="mr-3 flex-shrink-0 h-6 w-6 text-indigo-300"
-                      aria-hidden="true"
-                    />
-                    {item.name}
-                    {item.label ? (
-                      <span className="text-xs py-1 px-2 ml-2 rounded-full bg-indigo-900">
-                        {item.label}
-                      </span>
-                    ) : null}
-                  </a>
+                  <NavLink icon={<item.icon className="mr-4 flex-shrink-0 h-6 w-6 text-indigo-300"/>} name={item.name} href={item.href}/>
                 ))}
               </nav>
             </div>
@@ -228,7 +240,59 @@ export default function DashboardWindow() {
               <MenuIcon className="h-6 w-6" aria-hidden="true" />
             </button>
           </div>
-          <Outlet/>
+          <main className="flex-1">
+            <div className="py-6">
+              <div className="max-w-7xl flex justify-between mx-auto px-4 sm:px-6 md:px-8">
+                <h1 className="text-2xl font-semibold text-gray-900">
+                  Dashboard
+                </h1>
+                <div className="flex flex-wrap items-center space-x-6">
+                  <button onClick={e => {
+                    //@ts-ignore
+                    setInfoContent({content: "Your current badge is 'Young Mage', we will train you to become an SEO wizard of the First Order!"})
+                    setShowInfo(true)
+                  }} className="badge md:flex hidden flex-row-reverse items-center">
+                  <span className="bg-indigo-700 -ml-2 text-white font-sans font-light rounded-r-full py-1 px-4 text-xs">Young Mage</span>
+                    <figure className="w-10 h-10 ">
+                      <img src="/src/assets/images/robot.png" className="w-full bg-white rounded-full border border-indigo-700 h-full object-cover"/>
+                    </figure>
+                    
+                  </button>
+                  <div className="hidden md:block">
+                    <DomainPoint initial="S" domain="seolo.ai" title="Seolo"  />
+                  </div>
+
+                  <div className="relative">
+                    <BellIcon className="h-8 w-8 text-gray-500" />
+                    <span className="bg-red-500 h-2 w-2 absolute top-0 right-0 rounded-full"></span>
+                  </div>
+                  <div className="word">
+                    <p className="text-orange font-bold items-center space-x-2 text-xl flex">
+                      <p>213134</p>
+                      <span>
+                        <button>
+                          <QuestionMarkCircleIcon className="h-4 w-4" />
+                        </button>
+                      </span>
+                    </p>
+                    <p className="text-xs font-light text-gray-500">
+                      Word Count
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+                {/* Replace with your content */}
+
+                <div className="py-4">
+                  <div className="border-4 border-dashed border-gray-200 rounded-lg p-4">
+                    <Outlet />
+                  </div>
+                </div>
+                {/* /End replace */}
+              </div>
+            </div>
+          </main>
         </div>
       </div>
     </>
