@@ -17,7 +17,7 @@ import {
 } from "@heroicons/react/outline";
 
 import { HashRouter, Routes, Route } from "react-router-dom";
-
+import robotBadge from "../assets/images/robot.png"
 import image from "../assets/images/contact.png";
 import Stats from "../components/Stats";
 import DomainPoint from "../components/DomainPoint";
@@ -254,7 +254,7 @@ export default function DashboardWindow() {
                   }} className="badge md:flex hidden flex-row-reverse items-center">
                   <span className="bg-indigo-700 -ml-2 text-white font-sans font-light rounded-r-full py-1 px-4 text-xs">Young Mage</span>
                     <figure className="w-10 h-10 ">
-                      <img src="/src/assets/images/robot.png" className="w-full bg-white rounded-full border border-indigo-700 h-full object-cover"/>
+                      <img src={robotBadge} className="w-full bg-white rounded-full border border-indigo-700 h-full object-cover"/>
                     </figure>
                     
                   </button>
