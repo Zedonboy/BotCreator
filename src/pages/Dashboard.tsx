@@ -22,30 +22,11 @@ const navigation = [
   { name: "Home", href: "/dashboard", icon: HomeIcon, current: true },
   {
     name: "Bot Creator",
-    href: "/dashboard/bot-creator",
+    href: "/",
     icon: CakeIcon,
     current: false,
   },
-  {
-    name: "Templates",
-    href: "/dashboard/templates",
-    icon: FolderIcon,
-    current: false,
-  },
-  {
-    name: "Seolo Suggest",
-    href: "kl",
-    icon: CalendarIcon,
-    current: false,
-    label: "beta",
-  },
-  // { name: 'Documents', href: '#', icon: InboxIcon, current: false },
-  {
-    name: "Domains",
-    href: "/dashboard/domains",
-    icon: ChartBarIcon,
-    current: false,
-  },
+ 
 ];
 
 function classNames(...classes) {
@@ -93,7 +74,7 @@ export default function DashboardWindow() {
         
       */}
       {/**@ts-ignore */}
-      <InfoDialog open={showInfo} closeModal={setShowInfo} content={infoContent} />
+      {/* <InfoDialog open={showInfo} closeModal={setShowInfo} content={infoContent} /> */}
       <div>
         <Transition.Root show={sidebarOpen} as={Fragment}>
           <Dialog
@@ -262,7 +243,7 @@ export default function DashboardWindow() {
                     <BellIcon className="h-8 w-8 text-gray-500" />
                     <span className="bg-red-500 h-2 w-2 absolute top-0 right-0 rounded-full"></span>
                   </div>
-                  <div className="word">
+                  {/* <div className="word">
                     <p className="text-orange font-bold items-center space-x-2 text-xl flex">
                       <p>213134</p>
                       <span>
@@ -272,9 +253,9 @@ export default function DashboardWindow() {
                       </span>
                     </p>
                     <p className="text-xs font-light text-gray-500">
-                      Word Count
+                      Word Countu[pdate]
                     </p>
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
