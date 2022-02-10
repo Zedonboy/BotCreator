@@ -12,24 +12,25 @@ import History from "./pages/dashboard/History"
 import Domains from "./pages/dashboard/Domains";
 import Editor from "./pages/dashboard/Editor";
 import GenerateContent from "./pages/dashboard/GenerateContent";
+import Signin from "./pages/SignIn";
+import BotCreator from "./pages/dashboard/BotCreator";
+import {RecoilRoot} from "recoil"
 
 ReactDOM.render(
   <React.StrictMode>
+    <RecoilRoot>
     <HashRouter>
     <Routes>
-      <Route path="/" element={<Home />}/>
+      <Route path="/" element={<Signin />}/>
       <Route path="/dashboard" element={<DW/>}>
         <Route index element={<HomeDashboard/>}/>
-        <Route path="/dashboard/templates" element={<Templates/>}/>
-        <Route path="/dashboard/history" element={<History/>}/>
-        <Route path="/dashboard/domains" element={<Domains/>}/>
-        <Route path="/dashboard/editor" element={<Editor/>}/>
-        <Route path="/dashboard/generate" element={<GenerateContent/>}/>
+        <Route path="/dashboard/bot-creator" element={<BotCreator/>}/>
       </Route>
       <Route path="/signin" element={<SignIn/>}/>
     </Routes>
       
     </HashRouter>
+    </RecoilRoot>
   </React.StrictMode>,
   document.getElementById("root")
 );

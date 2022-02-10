@@ -25,8 +25,8 @@ import InfoDialog from "../components/InfoDialog";
 const navigation = [
   { name: "Home", href: "/dashboard", icon: HomeIcon, current: true },
   {
-    name: "A.I Contents",
-    href: "/dashboard/history",
+    name: "Bot Creator",
+    href: "/dashboard/bot-creator",
     icon: CakeIcon,
     current: false,
   },
